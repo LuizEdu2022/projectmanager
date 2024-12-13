@@ -1,14 +1,16 @@
 {% extends 'core/base.html' %}
 
-{% block content %}
+{% block content %} 
+    <a href="{% url 'project:project' project.id %}" class="py-4 px-8 bg-yellow-300 text-black inline-block">Voltar</a>
+     <br>
     <h1 class="mb-6 text-3xl">{{ todolist.name }}</h1>
-      
+    <br>
     <h1 class="py-4 px-8 bg-blue-600 text-white inline-block mb-6 text-3xl">{{porcentagem}}% Tarefas concluidas</h1>
     <br>
     {% if todolist.description %}
         <p class="mb-6">{{ todolist.description }}</p>
     {% endif %}
-
+    
     <a href="{% url 'task:add' project.id todolist.id %}" class="py-4 px-8 bg-emerald-600 text-white inline-block">Add task</a>
     <a href="{% url 'todolist:edit' project.id todolist.id %}" class="py-4 px-8 bg-sky-600 text-white inline-block">Edit</a>
     <a href="{% url 'todolist:delete' project.id todolist.id %}" class="py-4 px-8 bg-amber-600 text-white inline-block">Delete</a>
@@ -41,5 +43,25 @@
         {% endfor %}
     </div>
 
+    <h2 class="mt-6 text-2xl">Files</h2>
+
+    <a href="{% url 'project:upload_file' project.id %}" class="mt-6 py-4 px-8 bg-slate-600 text-white inline-block">Upload file</a>
+    <h2 class="mt-6 text-2xl">Notes</h2>
+
+    <a href="{% url 'project:add_note' project.id %}" class="mt-6 py-4 px-8 bg-slate-600 text-white inline-block">Add note</a>
+
+    <div class="mt-6 grid grid-cols-4 gap-4">
+        {% for note in project.notes.all %}
+            <div class="py-6 px-6 bg-slate-200">
+                <a href="{% url 'project:note_detail' project.id note.id %}">
+                    <h3 class="mb-4 text-xl">{{ note.name }}</h3>
+
+                    <p class="text-sm text-slate-600">
+                        {{ note.body|truncatechars:50 }}
+                    </p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
      
 {% endblock %}
